@@ -1,15 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import { Comment, CommentsProps } from "./types";
+import { useEffect } from "react";
+import { CommentsProps } from "./types";
 
-export default function Comments({ post, onClose }: CommentsProps) {
-  const {
-    data: comments,
-    isLoading,
-    error,
-  } = useQuery<Comment[], Error>({
-    queryKey: ["comments", post.id],
-    queryFn: () => fetch(`https://jsonplaceholder.typicode.com/posts/${post.id}/comments`).then(res => res.json()),
-  });
+
+export default function Comments({ post, comments, isLoading, error, onClose }: CommentsProps) {
+  useEffect(() => {
+    // Add the no-scroll class to body when the component mounts
+    document.body.classList.add("no-scroll");
+
+    // Clean up by removing the no-scroll class when the component unmounts
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={onClose}>
