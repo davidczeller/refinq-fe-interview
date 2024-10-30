@@ -1,26 +1,19 @@
 import Modal from "components/_common/Modal";
 import { CommentsProps } from "./types";
 import Loader from "components/_common/Loader";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useErrorModalStore } from "stores/useErrorModalStore";
 import ErrorModal from "components/ErrorModal";
 
 export default function Comments({ post, comments, isLoading, error, onClose }: CommentsProps) {
-  const [showErrorModal, setShowErrorModal] = useState(false);
+  const openErrorModal = useErrorModalStore(state => state.openErrorModal);
 
   // Show the error modal when an error occurs
   useEffect(() => {
     if (error) {
-      setShowErrorModal(true);
+      openErrorModal(`An error has occurred: ${error.message || "Unknown Error"}`);
     }
-  }, [error]);
-
-  const closeErrorModal = () => setShowErrorModal(false);
-
-  if (showErrorModal) {
-    return (
-      <ErrorModal message={`An error has occurred: ${error?.message || "Unknown Error"}`} onClose={closeErrorModal} />
-    );
-  }
+  }, [error, openErrorModal]);
 
   return (
     <Modal onClose={onClose}>
@@ -46,6 +39,9 @@ export default function Comments({ post, comments, isLoading, error, onClose }: 
           </ul>
         )}
       </div>
+
+      {/* Error Modal */}
+      <ErrorModal />
     </Modal>
   );
 }

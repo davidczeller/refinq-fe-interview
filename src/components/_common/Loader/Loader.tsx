@@ -1,5 +1,5 @@
 import React from "react";
-import loaderImage from "../../../assets/refinq.png";
+import loaderImage from "assets/refinq.png";
 
 type LoaderProps = {
   altText?: string;

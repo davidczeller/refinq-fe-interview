@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Loader from "components/_common/Loader";
 import ErrorModal from "components/ErrorModal";
@@ -8,15 +8,22 @@ import ErrorModal from "components/ErrorModal";
 import PostCard from "./components/PostCard";
 
 import { Post } from "./types";
+import { useErrorModalStore } from "stores/useErrorModalStore";
 
 export default function PostList() {
-  const [showErrorModal, setShowErrorModal] = useState(true);
+  const openErrorModal = useErrorModalStore(state => state.openErrorModal);
+
   const { isLoading, error, data } = useQuery<Post[], Error>({
     queryKey: ["repoData"],
     queryFn: () => fetch("https://jsonplaceholder.typicode.com/posts").then(res => res.json()),
   });
 
-  const closeModal = () => setShowErrorModal(false);
+  // Show the error modal when an error occurs
+  useEffect(() => {
+    if (error) {
+      openErrorModal(`An error has occurred: ${error.message || "Unknown Error"}`);
+    }
+  }, [error, openErrorModal]);
 
   if (isLoading)
     return (
@@ -24,10 +31,6 @@ export default function PostList() {
         <Loader />
       </div>
     );
-
-  if (showErrorModal && error) {
-    return <ErrorModal message={`An error has occurred: ${error?.message || "Unknown Error"}`} onClose={closeModal} />;
-  }
 
   return (
     <div className="container mx-auto p-4">
@@ -37,6 +40,8 @@ export default function PostList() {
           <PostCard key={post.id} post={post} />
         ))}
       </div>
+      {/* Error Modal */}
+      <ErrorModal />
     </div>
   );
 }
