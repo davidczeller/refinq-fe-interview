@@ -7,9 +7,3 @@ type Post = {
 export type PostCardProps = {
   post: Post;
 };
-
-export type Comment = {
-  id: number;
-  name: string;
-  body: string;
-};
