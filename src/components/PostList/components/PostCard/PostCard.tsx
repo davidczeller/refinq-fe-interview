@@ -8,6 +8,7 @@ export default function PostCard({ post }: PostCardProps) {
   const toggleComments = () => setShowComments(prev => !prev);
 
   // Fetch comments with useQuery and get the length for display
+  // Here should only get the length of the comments and this should happen in the Comments component
   const {
     data: comments,
     isLoading,
@@ -17,6 +18,8 @@ export default function PostCard({ post }: PostCardProps) {
     queryFn: () => fetch(`https://jsonplaceholder.typicode.com/posts/${post.id}/comments`).then(res => res.json()),
   });
 
+
+  // Key, value pair for button text
   const buttonText = showComments
     ? "Hide Comments"
     : comments && comments.length > 1

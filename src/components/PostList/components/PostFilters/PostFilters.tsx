@@ -1,5 +1,3 @@
-// src/components/PostFilters.tsx
-
 import { usePostFilterStore } from "stores/usePostFilterStore";
 
 export default function PostFilters() {

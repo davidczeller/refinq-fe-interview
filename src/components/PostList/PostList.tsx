@@ -67,6 +67,11 @@ export default function PostList() {
         </div>
 
         {/* Error Modal */}
+        {/*
+         Should use portal (event bubbling),
+         rendering should be checked on this level,
+         not inside the modal comp.
+        */}
         <ErrorModal />
       </div>
     </>
