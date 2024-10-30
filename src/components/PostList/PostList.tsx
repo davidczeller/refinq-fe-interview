@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { Post } from "./types";
+import PostCard from "./components/PostCard";
 
 export default function PostList() {
   const { isLoading, error, data } = useQuery<Post[], Error>({
@@ -16,10 +17,7 @@ export default function PostList() {
       <h1 className="text-3xl font-bold text-center mb-8">Posts</h1>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {data?.map(post => (
-          <div key={post.id} className="p-6 bg-white rounded-lg shadow-md border">
-            <h2 className="text-xl font-semibold mb-2 text-gray-800">{post.title}</h2>
-            <p className="text-gray-600">{post.body}</p>
-          </div>
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
     </div>
