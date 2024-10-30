@@ -1,5 +1,6 @@
 import Modal from "components/_common/Modal";
 import { CommentsProps } from "./types";
+import Loader from "components/_common/Loader/Loader";
 
 export default function Comments({ post, comments, isLoading, error, onClose }: CommentsProps) {
   return (
@@ -14,7 +15,7 @@ export default function Comments({ post, comments, isLoading, error, onClose }: 
       <div className="w-1/2 px-4 my-4 overflow-y-auto">
         <h3 className="text-xl font-semibold mb-2 sticky top-0 bg-white z-10">Comments</h3>
         {isLoading ? (
-          <p className="text-gray-400">Loading comments...</p>
+          <Loader />
         ) : error ? (
           <p className="text-red-500">Failed to load comments</p>
         ) : (
