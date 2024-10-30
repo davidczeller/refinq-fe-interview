@@ -19,7 +19,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+
+    "baseUrl": "./",
+    "paths": {
+      "components/*": ["src/components/*"]
+    }
   },
   "include": ["src"]
 }
