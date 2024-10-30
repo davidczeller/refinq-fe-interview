@@ -1,14 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { Post } from "./types";
+import { useState } from "react";
+
+import Loader from "components/_common/Loader";
+import ErrorModal from "components/ErrorModal";
+
 import PostCard from "./components/PostCard";
-import Loader from "components/_common/Loader/Loader";
+
+import { Post } from "./types";
 
 export default function PostList() {
+  const [showErrorModal, setShowErrorModal] = useState(true);
   const { isLoading, error, data } = useQuery<Post[], Error>({
     queryKey: ["repoData"],
     queryFn: () => fetch("https://jsonplaceholder.typicode.com/posts").then(res => res.json()),
   });
+
+  const closeModal = () => setShowErrorModal(false);
 
   if (isLoading)
     return (
@@ -16,7 +24,10 @@ export default function PostList() {
         <Loader />
       </div>
     );
-  if (error) return <div className="text-red-500">An error has occurred: {error.message}</div>;
+
+  if (showErrorModal && error) {
+    return <ErrorModal message={`An error has occurred: ${error?.message || "Unknown Error"}`} onClose={closeModal} />;
+  }
 
   return (
     <div className="container mx-auto p-4">

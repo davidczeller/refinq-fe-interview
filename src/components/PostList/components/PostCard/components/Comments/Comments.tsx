@@ -1,8 +1,27 @@
 import Modal from "components/_common/Modal";
 import { CommentsProps } from "./types";
-import Loader from "components/_common/Loader/Loader";
+import Loader from "components/_common/Loader";
+import { useState, useEffect } from "react";
+import ErrorModal from "components/ErrorModal";
 
 export default function Comments({ post, comments, isLoading, error, onClose }: CommentsProps) {
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+  // Show the error modal when an error occurs
+  useEffect(() => {
+    if (error) {
+      setShowErrorModal(true);
+    }
+  }, [error]);
+
+  const closeErrorModal = () => setShowErrorModal(false);
+
+  if (showErrorModal) {
+    return (
+      <ErrorModal message={`An error has occurred: ${error?.message || "Unknown Error"}`} onClose={closeErrorModal} />
+    );
+  }
+
   return (
     <Modal onClose={onClose}>
       {/* Post Section */}
@@ -16,8 +35,6 @@ export default function Comments({ post, comments, isLoading, error, onClose }: 
         <h3 className="text-xl font-semibold mb-2 sticky top-0 bg-white z-10">Comments</h3>
         {isLoading ? (
           <Loader />
-        ) : error ? (
-          <p className="text-red-500">Failed to load comments</p>
         ) : (
           <ul className="space-y-2 pb-4">
             {comments?.map(comment => (
